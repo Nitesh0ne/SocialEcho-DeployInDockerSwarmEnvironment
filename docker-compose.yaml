@@ -19,12 +19,7 @@ services:
     depends_on:
       - classifier
 
-  classifier:
-    build: ./classifier_server
-    ports:
-      - "6000:6000"
-    networks:
-      - socialecho-net
+  
 
 networks:
   socialecho-net:
