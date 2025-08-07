@@ -1,5 +1,7 @@
 pipeline {
-    agent docker-swarm-manager
+   agent {
+        label 'docker-swarm-manager'
+    }
     environment {
         STACK_NAME = 'socialecho'
     }

@@ -1,5 +1,8 @@
 pipeline {
-    agent docker-swarm-manager
+     agent {
+        label 'docker-swarm-manager'
+    }
+    
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
         DOCKERHUB_USER = 'nitace'
@@ -11,6 +14,7 @@ pipeline {
         stage('Build & Push Client Image') {
             steps {
                 dir('client') {
+                
                     sh "docker build -t $DOCKERHUB_USER/socialecho_client:latest ."
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'echo $PASS | docker login -u $USER --password-stdin'
