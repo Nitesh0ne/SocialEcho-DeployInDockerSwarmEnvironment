@@ -1,12 +1,12 @@
 pipeline {
-    agent anydocker-swarm-manager
+    agent docker-swarm-manager
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-        DOCKERHUB_USER = 'yourdockerhubuser'
+        DOCKERHUB_USER = 'nitace'
     }
     stages {
         stage('Checkout') {
-            steps { checkout scm }
+            steps {git branch: 'main', changelog: false, url: 'https://github.com/Nitesh0ne/SocialEcho-DeployInDockerSwarmEnvironment.git'}
         }
         stage('Build & Push Client Image') {
             steps {
