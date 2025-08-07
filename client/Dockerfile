@@ -6,6 +6,8 @@ WORKDIR /app
 
 # Copy source files
 COPY package.json package-lock.json ./
+RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
 RUN npm install
 
 COPY . .
