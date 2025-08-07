@@ -1,7 +1,18 @@
+# Base image
 FROM node:18-alpine
+
+# Set working directory
 WORKDIR /app
-COPY package*.json ./
+
+# Install app dependencies
+COPY package.json package-lock.json ./
 RUN npm install
+
+# Copy source code
 COPY . .
-EXPOSE 5000
-CMD ["npm", "start"]
+
+# Expose backend port (adjust if your server uses another)
+EXPOSE 4000
+
+# Start the app
+CMD ["node", "index.js"]

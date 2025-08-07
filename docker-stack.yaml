@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+
+  client:
+    image: yourdockerhubuser/socialecho_client:latest
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    env_file:
+      - ./client/.env
+    networks:
+      - socialecho-net
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+
+  server:
+    image: yourdockerhubuser/socialecho_server:latest
+    ports:
+      - target: 4000
+        published: 4000
+        protocol: tcp
+        mode: host
+    env_file:
+      - ./server/.env
+    networks:
+      - socialecho-net
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+
+  mongo:
+    image: mongo:5
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - socialecho-net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+
+networks:
+  socialecho-net:
+    driver: overlay
+
+volumes:
+  mongo-data:

@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        DOCKERHUB_USER = 'yourdockerhubuser'
+    }
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Build & Push Server Image') {
+            steps {
+                dir('server') {
+                    sh "docker build -t $DOCKERHUB_USER/socialecho_server:latest ."
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        sh "docker push $DOCKERHUB_USER/socialecho_server:latest"
+                        sh 'docker logout'
+                    }
+                }
+            }
+        }
+    }
+}

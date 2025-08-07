@@ -1,0 +1,24 @@
+pipeline {
+    agent anydocker-swarm-manager
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+        DOCKERHUB_USER = 'yourdockerhubuser'
+    }
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Build & Push Client Image') {
+            steps {
+                dir('client') {
+                    sh "docker build -t $DOCKERHUB_USER/socialecho_client:latest ."
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        sh "docker push $DOCKERHUB_USER/socialecho_client:latest"
+                        sh 'docker logout'
+                    }
+                }
+            }
+        }
+    }
+}
