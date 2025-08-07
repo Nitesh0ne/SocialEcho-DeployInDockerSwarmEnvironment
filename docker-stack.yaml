@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   client:
-    image: yourdockerhubuser/socialecho_client:latest
+    image: nitace/socialecho_client:latest
     ports:
       - target: 80
         published: 80
@@ -22,7 +22,7 @@ services:
           - node.role == worker
 
   server:
-    image: yourdockerhubuser/socialecho_server:latest
+    image: nitace/socialecho_server:latest
     ports:
       - target: 4000
         published: 4000
