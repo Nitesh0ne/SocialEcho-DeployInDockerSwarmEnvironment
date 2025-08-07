@@ -5,10 +5,7 @@ services:
   client:
     image: nitace/socialecho_client:latest
     ports:
-      - target: 80
-        published: 80
-        protocol: tcp
-        mode: host
+      - "80:80"
     networks:
       - socialecho-net
     deploy:
@@ -22,10 +19,7 @@ services:
   server:
     image: nitace/socialecho_server:latest
     ports:
-      - target: 4000
-        published: 4000
-        protocol: tcp
-        mode: host
+      - "4000:4000"
     env_file:
       - ./server/.env
     networks:
@@ -50,6 +44,7 @@ services:
           - node.role == manager
       restart_policy:
         condition: on-failure
+      replicas: 1
 
 networks:
   socialecho-net:

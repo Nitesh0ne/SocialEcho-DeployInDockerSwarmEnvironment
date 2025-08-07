@@ -21,6 +21,9 @@ FROM nginx:alpine
 # Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
 
+# Add your custom config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy React build output to nginx's public directory
 COPY --from=build /app/build /usr/share/nginx/html
 
