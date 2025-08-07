@@ -6,6 +6,8 @@ WORKDIR /app
 # Install app dependencies
 COPY package.json package-lock.json ./
 RUN npm ci --only=production
+RUN npm install -g nodemon
+
 
 # Copy app source code
 COPY . .
