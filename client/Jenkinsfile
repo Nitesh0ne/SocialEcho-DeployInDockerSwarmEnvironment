@@ -9,14 +9,16 @@ pipeline {
     }
     stages {
         stage('Checkout') {
-            steps {git branch: 'main', changelog: false, url: 'https://github.com/Nitesh0ne/SocialEcho-DeployInDockerSwarmEnvironment.git'}
+            steps {git branch: 'main', changelog: false, 
+            url: 'https://github.com/Nitesh0ne/SocialEcho-DeployInDockerSwarmEnvironment.git'}
         }
         stage('Build & Push Client Image') {
             steps {
                 dir('client') {
                 
                     sh "docker build -t $DOCKERHUB_USER/socialecho_client:latest ."
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', 
+                    usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'echo $PASS | docker login -u $USER --password-stdin'
                         sh "docker push $DOCKERHUB_USER/socialecho_client:latest"
                      
